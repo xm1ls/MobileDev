@@ -64,7 +64,7 @@ fun SettingsPageTheme(
 
     MaterialTheme(
         colorScheme = LightColorScheme,
-        typography = Typography,
+        typography = RobotoTypography,
         content = content
     )
 }
