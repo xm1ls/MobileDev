@@ -49,16 +49,23 @@ val RobotoTypography = Typography.copy(
         lineHeight = 42.sp,
         letterSpacing = 0.5.sp
     ),
-    titleMedium = TextStyle(
+    titleLarge = TextStyle(
         fontFamily = robotoFontFamily,
         fontWeight = FontWeight.Medium,
         fontSize = 21.sp,
         lineHeight = 25.sp,
         letterSpacing = 0.5.sp
     ),
-    titleSmall = TextStyle(
+    titleMedium = TextStyle(
         fontFamily = robotoFontFamily,
         fontWeight = FontWeight.Medium,
+        fontSize = 20.sp,
+        lineHeight = 24.sp,
+        letterSpacing = 0.5.sp
+    ),
+    titleSmall = TextStyle(
+        fontFamily = robotoFontFamily,
+        fontWeight = FontWeight.Normal,
         fontSize = 20.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
