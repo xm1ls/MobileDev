@@ -16,15 +16,15 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    primary = Black,
+    secondary = Yellow,
+    background = Grey
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = Black,
     secondary = Yellow,
-    tertiary = Grey
+    background = Grey
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
@@ -41,7 +41,7 @@ private val LightColorScheme = lightColorScheme(
 fun SettingsPageTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
@@ -63,7 +63,7 @@ fun SettingsPageTheme(
     }
 
     MaterialTheme(
-        colorScheme = colorScheme,
+        colorScheme = LightColorScheme,
         typography = Typography,
         content = content
     )
