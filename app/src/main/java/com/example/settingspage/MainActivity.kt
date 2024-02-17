@@ -1,5 +1,6 @@
 package com.example.settingspage
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -25,6 +26,8 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringArrayResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.settingspage.ui.theme.SettingsPageTheme
@@ -45,8 +48,32 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun SettingsPage(modifier: Modifier = Modifier) {
+fun getIcons() {
+    val icons = listOf<Painter>(
+        painterResource(id = R.drawable.ic_accessibility),
+        painterResource(id = R.drawable.ic_apps),
+        painterResource(id = R.drawable.ic_devices),
+        painterResource(id = R.drawable.ic_notifications),
+        painterResource(id = R.drawable.ic_search),
+        painterResource(id = R.drawable.ic_settings),
+        painterResource(id = R.drawable.ic_wifi),
+        )
+        val strings = stringArrayResource(id = R.array.Options)
 
+    Column {
+        for(i in strings) {
+//            Profile(image = i, imageHorizontalArrangement = Arrangement.End)
+            Text(text = i)
+        }
+    }
+}
+
+fun getAllStrings(context: Context): List<String> {
+    val stringArray = context.resources.getStringArray(R.array.Options)
+    return stringArray.toList()
+}
+@Composable
+fun SettingsPage(modifier: Modifier = Modifier) {
     val alphaModifier = Modifier.alpha(0.6f)
 
     Column(
@@ -309,5 +336,6 @@ fun SettingsPagePreview() {
                 .background(color = MaterialTheme.colorScheme.background)
                 .padding(horizontal = 21.dp)
         )
+//        getIcons()
     }
 }

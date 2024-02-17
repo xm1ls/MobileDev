@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="Options">
+        <item>Network &amp; Internet</item>
+        <item>Wi-Fi, Mobile, Data usage, Hotspot</item>
+
+        <item>Connected devices</item>
+        <item>Bluetooth, Cast, NFC</item>
+
+        <item>App</item>
+        <item>Permission, default apps</item>
+
+        <item>Notifications</item>
+        <item>Permissions, default apps</item>
+
+        <item>Digital wellbeing</item>
+        <item>Screen time, app timer, bedtime schedules</item>
+
+    </string-array>
+</resources>
