@@ -6,11 +6,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -24,25 +22,23 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.settingspage.ui.theme.SettingsPageTheme
-import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,14 +64,29 @@ fun ArtSpacePage() {
     val drawables = mutableListOf<Int>()
 
     for(field in fields) {
-        if("icon_" in field.name)
+        if("img_" in field.name)
             drawables.add(field.getInt(null))
+    }
+
+    var currentImageId = remember {
+        mutableIntStateOf(0)
+    }
+
+
+    var currentImage =  when(currentImageId.value) {
+        0 -> drawables[0]
+        1 -> drawables[1]
+        2 -> drawables[2]
+        3 -> drawables[3]
+        4 -> drawables[4]
+        5 -> drawables[5]
+        else -> R.drawable.img_avatar
     }
 
     Column(
     ) {
         ArtSpaceImage(
-            image = R.drawable.img_avatar,
+            image = currentImage,
             modifier = Modifier.weight(.70f)
         )
         ArtSpaceText(
@@ -84,10 +95,19 @@ fun ArtSpacePage() {
             modifier = Modifier.weight(.2f)
         )
         ArtSpaceButtons(
+            prevButton = {
+                if(currentImageId.value <= 0)
+                    currentImageId.value
+                else currentImageId.value--
+                },
+            nextButton = {
+                if(currentImageId.value >= drawables.size)
+                    currentImageId.value
+                else currentImageId.value++
+            },
             modifier = Modifier.weight(.1f)
         )
     }
-
 
 }
 
@@ -136,11 +156,6 @@ fun ArtSpaceText(
                 color = MaterialTheme.colorScheme.secondary,
                 shape = RoundedCornerShape(5)
             )
-//            .border(
-//                width = 1.dp,
-//                color = MaterialTheme.colorScheme.primary,
-//                shape = RoundedCornerShape(5)
-//            )
     ) {
         Text(
             text = title,
@@ -154,7 +169,11 @@ fun ArtSpaceText(
 }
 
 @Composable
-fun ArtSpaceButtons(modifier: Modifier = Modifier) {
+fun ArtSpaceButtons(
+    prevButton: () -> Unit = { },
+    nextButton: () -> Unit = { },
+    modifier: Modifier = Modifier
+) {
     Row(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
@@ -163,7 +182,7 @@ fun ArtSpaceButtons(modifier: Modifier = Modifier) {
             .padding(10.dp)
     ) {
         Button(
-            onClick = { /*TODO*/ },
+            onClick = { prevButton() },
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.tertiary
@@ -184,7 +203,7 @@ fun ArtSpaceButtons(modifier: Modifier = Modifier) {
         }
         Spacer(Modifier.width(10.dp))
         Button(
-            onClick = { /*TODO*/ },
+            onClick = { nextButton() },
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.tertiary
