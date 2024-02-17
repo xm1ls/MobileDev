@@ -83,6 +83,20 @@ fun ArtSpacePage() {
         else -> R.drawable.img_avatar
     }
 
+    var photoDescription = when(currentImageId.value) {
+        0 -> "title 0, artist 0, year 0"
+        1 -> "title 1, artist 1, year 1"
+        2 -> "title 2, artist 2, year 2"
+        3 -> "title 3, artist 3, year 3"
+        4 -> "title 4, artist 4, year 4"
+        5 -> "title 5, artist 5, year 5"
+        else -> "title x, artist x, year x"
+    }
+
+    var (title, artist, year) = photoDescription.split(", ").map{
+        it.trim()
+    }
+
     Column(
     ) {
         ArtSpaceImage(
@@ -90,8 +104,9 @@ fun ArtSpacePage() {
             modifier = Modifier.weight(.70f)
         )
         ArtSpaceText(
-            title = "Woman",
-            artist = "Unknown Photographer",
+            title = title,
+            artist = artist,
+            year = year,
             modifier = Modifier.weight(.2f)
         )
         ArtSpaceButtons(
@@ -101,7 +116,7 @@ fun ArtSpacePage() {
                 else currentImageId.value--
                 },
             nextButton = {
-                if(currentImageId.value >= drawables.size)
+                if(currentImageId.value >= drawables.size-1)
                     currentImageId.value
                 else currentImageId.value++
             },
