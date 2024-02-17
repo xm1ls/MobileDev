@@ -6,72 +6,207 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.settingspage.ui.theme.SettingsPageTheme
+import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             SettingsPageTheme {
-                SettingsPage(
-                    modifier = Modifier
-                        .background(color = MaterialTheme.colorScheme.background)
-                        .padding(horizontal = 21.dp)
-                )
+//                SettingsPage(
+//                    modifier = Modifier
+//                        .background(color = MaterialTheme.colorScheme.background)
+//                        .padding(horizontal = 21.dp)
+//                )
+                ArtSpacePage()
             }
         }
     }
 }
 
 @Composable
-fun getIcons() {
-    val icons = listOf<Painter>(
-        painterResource(id = R.drawable.ic_accessibility),
-        painterResource(id = R.drawable.ic_apps),
-        painterResource(id = R.drawable.ic_devices),
-        painterResource(id = R.drawable.ic_notifications),
-        painterResource(id = R.drawable.ic_search),
-        painterResource(id = R.drawable.ic_settings),
-        painterResource(id = R.drawable.ic_wifi),
-        )
-        val strings = stringArrayResource(id = R.array.Options)
+fun ArtSpacePage() {
+    val strings = stringArrayResource(id = R.array.Options)
 
-    Column {
-        for(i in strings) {
-//            Profile(image = i, imageHorizontalArrangement = Arrangement.End)
-            Text(text = i)
-        }
+    val fields = R.drawable::class.java.fields
+    val drawables = mutableListOf<Int>()
+
+    for(field in fields) {
+        if("icon_" in field.name)
+            drawables.add(field.getInt(null))
+    }
+
+    Column(
+    ) {
+        ArtSpaceImage(
+            image = R.drawable.img_avatar,
+            modifier = Modifier.weight(.70f)
+        )
+        ArtSpaceText(
+            title = "Woman",
+            artist = "Unknown Photographer",
+            modifier = Modifier.weight(.2f)
+        )
+        ArtSpaceButtons(
+            modifier = Modifier.weight(.1f)
+        )
+    }
+
+
+}
+
+@Composable
+fun ArtSpaceImage(
+    image: Int,
+    modifier: Modifier = Modifier) {
+    Column (
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(10.dp)
+            .background(
+                color = MaterialTheme.colorScheme.background,
+                shape = RoundedCornerShape(5)
+            )
+
+    ) {
+        Image(
+            painter = painterResource(id = image),
+            contentDescription = null,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(20.dp)
+                .clip(RoundedCornerShape(3))
+            ,
+            contentScale = ContentScale.Crop,
+        )
     }
 }
 
-fun getAllStrings(context: Context): List<String> {
-    val stringArray = context.resources.getStringArray(R.array.Options)
-    return stringArray.toList()
+@Composable
+fun ArtSpaceText(
+    title: String = "Unknown Title",
+    artist: String = "Unknown Artist",
+    year: String = "Unknown Year",
+    modifier: Modifier = Modifier) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(10.dp)
+            .background(
+                color = MaterialTheme.colorScheme.secondary,
+                shape = RoundedCornerShape(5)
+            )
+//            .border(
+//                width = 1.dp,
+//                color = MaterialTheme.colorScheme.primary,
+//                shape = RoundedCornerShape(5)
+//            )
+    ) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.headlineLarge
+        )
+        Text(
+            text = "$artist $year",
+            style = MaterialTheme.typography.labelSmall
+        )
+    }
 }
+
+@Composable
+fun ArtSpaceButtons(modifier: Modifier = Modifier) {
+    Row(
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(10.dp)
+    ) {
+        Button(
+            onClick = { /*TODO*/ },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.tertiary
+            ),
+            shape = RoundedCornerShape(10),
+            modifier = Modifier
+                .fillMaxHeight()
+                .weight(.5f)
+                .shadow(
+                    4.dp,
+                    shape = MaterialTheme.shapes.extraSmall
+                )
+        ) {
+            Text(
+                text = "Previous",
+                style = MaterialTheme.typography.labelSmall
+            )
+        }
+        Spacer(Modifier.width(10.dp))
+        Button(
+            onClick = { /*TODO*/ },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.tertiary
+            ),
+            shape = RoundedCornerShape(10),
+            modifier = Modifier
+                .fillMaxHeight()
+                .weight(.5f)
+                .shadow(
+                    4.dp,
+                    shape = MaterialTheme.shapes.extraSmall
+                )
+            ) {
+            Text(
+                text = "Next",
+                style = MaterialTheme.typography.labelSmall
+            )
+        }
+
+    }
+}
+
 @Composable
 fun SettingsPage(modifier: Modifier = Modifier) {
     val alphaModifier = Modifier.alpha(0.6f)
@@ -97,7 +232,7 @@ fun SettingsPage(modifier: Modifier = Modifier) {
         )
         Spacer(modifier = Modifier.height(23.dp))
         PageItem(
-            icon = painterResource(id = R.drawable.ic_settings),
+            icon = painterResource(id = R.drawable.icon_settings),
             iconBgModifier = Modifier.size(47.dp),
             primaryText = {
                 Text(
@@ -123,7 +258,7 @@ fun SettingsPage(modifier: Modifier = Modifier) {
         )
         Spacer(modifier = Modifier.height(15.dp))
         PageItem(
-            icon = painterResource(id = R.drawable.ic_search),
+            icon = painterResource(id = R.drawable.icon_search),
             iconModifier = Modifier.alpha(0.7f),
             iconBgModifier = Modifier.size(47.dp),
             primaryText = {
@@ -143,7 +278,7 @@ fun SettingsPage(modifier: Modifier = Modifier) {
         )
         Spacer(modifier = Modifier.height(40.dp))
         PageItem(
-            icon = painterResource(id = R.drawable.ic_wifi),
+            icon = painterResource(id = R.drawable.icon_wifi),
             iconBgModifier = Modifier
                 .size(47.dp)
                 .clip(RoundedCornerShape(50))
@@ -167,7 +302,7 @@ fun SettingsPage(modifier: Modifier = Modifier) {
         )
         Spacer(modifier = Modifier.height(40.dp))
         PageItem(
-            icon = painterResource(id = R.drawable.ic_devices),
+            icon = painterResource(id = R.drawable.icon_devices),
             iconBgModifier = Modifier
                 .size(47.dp)
                 .clip(RoundedCornerShape(50))
@@ -191,7 +326,7 @@ fun SettingsPage(modifier: Modifier = Modifier) {
         )
         Spacer(modifier = Modifier.height(40.dp))
         PageItem(
-            icon = painterResource(id = R.drawable.ic_apps),
+            icon = painterResource(id = R.drawable.icon_apps),
             iconBgModifier = Modifier
                 .size(47.dp)
                 .clip(RoundedCornerShape(50))
@@ -215,7 +350,7 @@ fun SettingsPage(modifier: Modifier = Modifier) {
         )
         Spacer(modifier = Modifier.height(40.dp))
         PageItem(
-            icon = painterResource(id = R.drawable.ic_notifications),
+            icon = painterResource(id = R.drawable.icon_notifications),
             iconBgModifier = Modifier
                 .size(47.dp)
                 .clip(RoundedCornerShape(50))
@@ -239,7 +374,7 @@ fun SettingsPage(modifier: Modifier = Modifier) {
         )
         Spacer(modifier = Modifier.height(40.dp))
         PageItem(
-            icon = painterResource(id = R.drawable.ic_accessibility),
+            icon = painterResource(id = R.drawable.icon_accessibility),
             iconBgModifier = Modifier
                 .size(47.dp)
                 .clip(RoundedCornerShape(50))
@@ -329,13 +464,25 @@ fun PageItem(
     showSystemUi = true
 )
 @Composable
+fun ArtSpacePreview() {
+    SettingsPageTheme {
+        ArtSpacePage()
+    }
+}
+
+//@Preview(
+//    showBackground = true,
+//    showSystemUi = true
+//)
+@Composable
 fun SettingsPagePreview() {
     SettingsPageTheme {
-        SettingsPage(
-            modifier = Modifier
-                .background(color = MaterialTheme.colorScheme.background)
-                .padding(horizontal = 21.dp)
-        )
+//        SettingsPage(
+//            modifier = Modifier
+//                .background(color = MaterialTheme.colorScheme.background)
+//                .padding(horizontal = 21.dp)
+//        )
 //        getIcons()
     }
 }
+
